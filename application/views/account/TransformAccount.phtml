@@ -1,0 +1,25 @@
+<html>
+	<head>
+		<title>账户余额互转</title>
+	</head>
+	<body>
+		<form action="/fund/account/transform" method="post">
+			转出账户:
+			<select name="source" id="source"> 
+				<option value="-1" selected>--转出账户--</option> 
+				<option value="card">--银行卡--</option> 
+				<option value="cash">--现金--</option> 
+				<option value="online">--在线支付--</option> 
+			</select><br/>
+			转入账户:
+			<select name="dest" id="dest"> 
+				<option value="-1" selected>--转入账户--</option> 
+				<option value="card">--银行卡--</option> 
+				<option value="cash">--现金--</option> 
+				<option value="online">--在线支付--</option> 
+			</select></br>
+			转账金额:<input type="text" length='20' name='cost'/><br/>
+			<input type="submit" value="转账" /> 
+		</form> 
+	</body>
+</html>

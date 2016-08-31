@@ -1,0 +1,54 @@
+<html>
+	<head>
+		<title>日常收支记录修改</title>
+		<script type="text/javascript"> 
+			function del(id){
+				parent.window.location='/fund/account/delete?id='+id;
+			}
+			function modify(id){
+				parent.window.location='/fund/account/tomodify?id='+id;
+			}
+		</script>
+	</head>
+	<body>
+		<table>
+			<tr>
+				<th>记录人</th>
+				<th>记录时间</th>
+				<th>收支类型</th>
+				<th>收支明细</th>
+				<th>资金来源</th>
+				<th>账户余额</th>
+				<th>备注</th>
+				<th>操作</th>
+			</tr>
+			<?php
+				foreach($result as $r){
+					$record = "<tr>";
+					$record = $record."<td>".$r['user']."</td>";
+					$record = $record."<td>".$r['recordtime']."</td>";
+					$type = $r['type']==1?"支出":"收入";
+					$record = $record."<td>$type</td>";
+					$record = $record."<td>".$r['briefreason'].":".$r['cost']."</td>";
+					$record = $record."<td>".$r['source']."</td>";
+					$record = $record."<td>".$r['balance']."</td>";
+					$record = $record."<td>".$r['remarks']."</td>";
+					$record = $record."<td><input type='button' value='删除' onclick='del(".$r['id'].");' />";
+					$record = $record."<input type='button' value='更新' onclick='modify(".$r['id'].");' /></td>";
+					$record = $record."</tr>";
+					echo $record;
+				}
+			?>
+		</table>
+		<?php 
+			$firstpage = "<a href='/fund/account/list?$query"."sn=1&rn=$rn&tn=$tn'>首页</a>";
+			$prepage = "<a href='/fund/account/list?$query"."sn=".($sn-1)."&rn=$rn&tn=$tn'>上一页</a>";
+			$nextpage = "<a href='/fund/account/list?$query"."sn=".($sn+1)."&rn=$rn&tn=$tn'>下一页</a>";
+			$lastpage = "<a href='/fund/account/list?$query"."sn=$tn&rn=$rn&tn=$tn'>尾页</a>";
+			echo $sn==1||$tn<=1 ? "首页" : $firstpage;
+			echo $sn==1||$tn<=1 ? "上一页" : $prepage;
+			echo $sn==$tn||$tn<=1 ? "下一页" : $nextpage;
+			echo $sn==$tn||$tn<=1 ? "尾页" : $lastpage;
+			?>
+	</body>
+</html>

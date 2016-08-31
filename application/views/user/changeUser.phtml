@@ -1,0 +1,18 @@
+<html>
+	<head>
+		<title>用户信息修改</title>
+	</head>
+	<body>	
+		<form action="/fund/user/change" method="post">
+			username:<input type="text" name="username" length=20 value='<?php echo $info['username']; ?>' readonly/>
+			old password:<input type="password" name="password" length=20/>
+			new password:<input type="password" name="password1" length=20/>
+			new password:<input type="password" name="password2" length=20/>
+			basicincome:<input type="text" name="basic_income" length=20 value='<?php echo $info['basic_income']; ?>'/>
+			palnsave:<input type="text" name="plan_save" length=20 value='<?php echo $info['plan_save']; ?>'/>
+			tofamily:<input type="text" name="to_family" length=20 value='<?php echo $info['to_family']; ?>'/>
+			rent:<input type="text" name="rent" length=20 value='<?php echo $info['rent']; ?>'/>
+			<input type="submit" value="修改信息" />
+		</form>
+	</body>
+</html>

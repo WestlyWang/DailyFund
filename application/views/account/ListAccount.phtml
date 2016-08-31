@@ -1,0 +1,106 @@
+<html>
+	<head>
+		<title>收支信息详情</title>
+		<script type="text/javascript"> 
+			function doAction(index){ 
+				var arr = new Array; 
+				arr[0] = [ new Option('--收支明细--', '-1',true) ]; 
+				arr[1] = [  new Option('请选择','-1',true),
+							new Option('工资', 'income1'), 
+						    new Option('奖金', 'income2'), 
+							new Option('理财', 'income3'), 
+							new Option('转入', 'income5'), 
+							new Option('其他', 'income4') ]; 
+				arr[2] = [  new Option('请选择','-1',true),
+							new Option('房租', 'consume1'), 
+						    new Option('定存', 'consume2'), 
+						    new Option('餐费', 'consume3'), 
+						    new Option('水电', 'consume4'), 
+						    new Option('购物', 'consume5'), 
+						    new Option('充电', 'consume6'), 
+						    new Option('孝敬父母', 'consume7'), 
+						    new Option('转出', 'consume9'), 
+						    new Option('其他', 'consume8') ]; 
+				var briefreason = document.getElementById('briefreason');
+				briefreason.innerHTML = ''; 
+				for (i = 0;i<arr[index].length; i++){ 
+					briefreason.options[i] = arr[index][i]; 
+				}
+			}
+			function del(id){
+				parent.window.location='/fund/account/delete?id='+id;
+			}
+			function modify(id){
+				parent.window.location='/fund/account/tomodify?id='+id;
+			}
+			window.onload = function(){
+				var index = document.getElementById('type').value;
+				index = parseInt(index) + 1;
+				doAction(index);
+			}
+		</script>
+	</head>
+	<body>
+		<form action="/fund/account/list" method="post">
+			收支类型:
+			<select id="type" name="type" onchange="doAction(this.selectedIndex);"> 
+				<option value="-1" selected>--收支类型--</option> 
+				<option value="0">----收入----</option> 
+				<option value="1">----支出----</option> 
+			</select>
+			收支明细:
+			<select name="briefreason" id="briefreason"> 
+				<option value="-1" selected>--收支明细--</option> 
+			</select> 
+			收支来源:
+			<select name="source" id="source"> 
+				<option value="-1" selected>--收支来源--</option> 
+				<option value="card">--银行卡--</option> 
+				<option value="cash">--现金--</option> 
+				<option value="online">--在线支付--</option> 
+			</select>
+			时间:<input type="date" name="recordtime"/>
+			每页记录数:<input type="text" name="rn"/>
+			<input type="submit" value="查询"/>
+		</form>
+		<table>
+			<tr>
+				<th>记录人</th>
+				<th>记录时间</th>
+				<th>收支类型</th>
+				<th>收支明细</th>
+				<th>资金来源</th>
+				<th>账户余额</th>
+				<th>备注</th>
+				<th>操作</th>
+			</tr>
+			<?php
+				foreach($result as $r){
+					$record = "<tr>";
+					$record = $record."<td>".$r['user']."</td>";
+					$record = $record."<td>".$r['recordtime']."</td>";
+					$type = $r['type']==1?"支出":"收入";
+					$record = $record."<td>$type</td>";
+					$record = $record."<td>".$r['briefreason'].":".$r['cost']."</td>";
+					$record = $record."<td>".$r['source']."</td>";
+					$record = $record."<td>".$r['balance']."</td>";
+					$record = $record."<td>".$r['remarks']."</td>";
+					$record = $record."<td><input type='button' value='删除' onclick='del(".$r['id'].");' />";
+					$record = $record."<input type='button' value='更新' onclick='modify(".$r['id'].");' /></td>";
+					$record = $record."</tr>";
+					echo $record;
+				}
+			?>
+		</table>
+		<?php 
+			$firstpage = "<a href='/fund/account/list?$query"."sn=1&rn=$rn&tn=$tn'>首页</a>";
+			$prepage = "<a href='/fund/account/list?$query"."sn=".($sn-1)."&rn=$rn&tn=$tn'>上一页</a>";
+			$nextpage = "<a href='/fund/account/list?$query"."sn=".($sn+1)."&rn=$rn&tn=$tn'>下一页</a>";
+			$lastpage = "<a href='/fund/account/list?$query"."sn=$tn&rn=$rn&tn=$tn'>尾页</a>";
+			echo $sn==1||$tn<=1 ? "首页" : $firstpage;
+			echo $sn==1||$tn<=1 ? "上一页" : $prepage;
+			echo $sn==$tn||$tn<=1 ? "下一页" : $nextpage;
+			echo $sn==$tn||$tn<=1 ? "尾页" : $lastpage;
+			?>
+	</body>
+</html>

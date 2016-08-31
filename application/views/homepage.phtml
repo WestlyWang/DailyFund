@@ -1,0 +1,72 @@
+<html>
+	<head>
+		<title>账户管理系统</title>
+		<script type="text/javascript">
+			function add(){
+				document.getElementById("main").innerHTML = 
+					"<iframe src='/fund/homepage/add' width='100%' height='100%' frameborder=0></iframe>";
+			}
+			function del(){
+				document.getElementById("main").innerHTML = 
+					"<iframe src='/fund/homepage/list' width='100%' height='100%' frameborder=0></iframe>";
+			}
+			function modify(){
+				document.getElementById("main").innerHTML = 
+					"<iframe src='/fund/homepage/list' width='100%' height='100%' frameborder=0></iframe>";
+			}
+			function list(){
+				document.getElementById("main").innerHTML = 
+					"<iframe src='/fund/account/list' width='100%' height='100%' frameborder=0></iframe>";
+			}
+			function changeinfo(){
+				document.getElementById("main").innerHTML = 
+					"<iframe src='/fund/homepage/change' width='100%' height='100%' frameborder=0></iframe>";
+			}
+			function transform(){
+				document.getElementById("main").innerHTML = 
+					"<iframe src='/fund/homepage/transform' width='100%' height='100%' frameborder=0></iframe>";
+			}
+			function homepage(){
+				document.getElementById("main").innerHTML = 
+					"HomePage";
+			}
+			function logout(){
+				window.location.href="/fund/index/logout";
+			}
+			function reload(){
+				parent.location.href="/fund/index/index";
+			}
+			window.onload = function(){
+				var method = "<?php echo $method; ?>";
+				if(method == "add"){
+					add();
+				}else if(method == "del"){
+					del();
+				}else if(method == "modify"){
+					modify();
+				}else if(method == "list"){
+					list();
+				}else if(method == "reload"){
+					reload();
+				}else{
+					homepage();
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div>
+			<div name="head">
+				<a href="javascript:homepage();">首页</a>
+				<a href="javascript:add();">添加</a>
+				<a href="javascript:del();">删除</a>
+				<a href="javascript:modify();">更新</a>
+				<a href="javascript:list();">查询</a>
+				<a href="javascript:transform();">转账</a>
+				<a href="javascript:changeinfo();">注册信息更改</a>
+				<a href="javascript:logout();">注销</a>
+			</div>
+			<div name="main" id="main"></div>
+		</div>
+	</body>
+</html>

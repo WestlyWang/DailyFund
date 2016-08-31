@@ -1,0 +1,95 @@
+<html>
+	<head>
+		<title>更新收支信息</title>
+		<script type="text/javascript"> 
+			function doAction(index){ 
+				var arr = new Array; 
+				arr[0] = [ new Option('--收支明细--', '-1') ]; 
+				arr[1] = [  new Option('工资', 'income1'), 
+						    new Option('奖金', 'income2'), 
+							new Option('理财', 'income3'), 
+							new Option('转入', 'income5'), 
+							new Option('其他', 'income4') ]; 
+				arr[2] = [  new Option('房租', 'consume1'), 
+						    new Option('定存', 'consume2'), 
+						    new Option('餐费', 'consume3'), 
+						    new Option('水电', 'consume4'), 
+						    new Option('购物', 'consume5'), 
+						    new Option('充电', 'consume6'), 
+						    new Option('孝敬父母', 'consume7'), 
+						    new Option('转出', 'consume9'), 
+						    new Option('其他', 'consume8') ]; 
+				var briefreason = document.getElementById('briefreason');
+				briefreason.innerHTML = ''; 
+				for (i = 0;i<arr[index].length; i++){ 
+					briefreason.options[i] = arr[index][i]; 
+				}
+			}
+			function selectOption(){
+				var typeObj = document.getElementById('type');
+				var briefreasonObj = document.getElementById('briefreason');
+				var sourceObj = document.getElementById('source');
+				var type = "<?php echo $info['type']?>";
+				var briefreason = "<?php echo $info['briefreason']?>";
+				var source = "<?php echo $info['source']?>";
+				for(i=0;i<typeObj.length;i++){
+					if(typeObj.options[i].value == type){
+						typeObj.options[i].selected = "selected";
+						break;
+					}
+				}
+				for(i=0;i<briefreasonObj.length;i++){
+					if(briefreasonObj.options[i].text == briefreason){
+						briefreasonObj.options[i].selected = "selected";
+						break;
+					}
+				}
+				for(i=0;i<sourceObj.length;i++){
+					if(sourceObj.options[i].text == source){
+						sourceObj.options[i].selected = "selected";
+						break;
+					}
+				}
+			}
+			function backup(){
+				history.go(-1);
+			}
+			window.onload = function(){
+				var index = "<?php echo $info['type']?>";
+				index = parseInt(index)+1;
+				doAction(index);
+				selectOption();
+			}
+		</script>
+	</head>
+	<body>
+		<form action="/fund/account/modify" method="post">
+			ID:<input type="text" length='20' name='id' value="<?php echo $info['id'];?>" readonly /><br/>
+			用户:<input type="text" length='20' name='user' value="<?php echo $info['user'];?>" readonly /><br/>
+			记录时间:<input type="text" length='20' name='recordtime' value="<?php echo $info['recordtime'];?>" readonly /><br/>
+			收支类型:
+			<select id="type" name="type" onchange="doAction(this.selectedIndex);"> 
+				<option value="-1">--收支类型--</option> 
+				<option value="0">----收入----</option> 
+				<option value="1">----支出----</option> 
+			</select><br/>
+			收支明细:
+			<select name="briefreason" id="briefreason"> 
+				<option value="-1">--收支明细--</option> 
+			</select><br/> 
+			收支来源:
+			<select name="source" id="source"> 
+				<option value="-1" selected>--收支来源--</option> 
+				<option value="card">银行卡</option> 
+				<option value="cash">现金</option> 
+				<option value="online">在线支付</option> 
+			</select><br/>
+			费用:<input type="text" length='20' name='cost' value="<?php echo $info['cost'];?>"/><br/>
+			<?php echo $info['source']; ?>余额:<input type="text" length='20' name='singlebalance' value="<?php echo $info['singlebalance'];?>" readonly /><br/>
+			余额:<input type="text" length='20' name='balance' value="<?php echo $info['balance'];?>" readonly /><br/>
+			详细:<textarea row="40" col="40" name='remarks'><?php echo $info['remarks'];?></textarea>
+			<input type="submit" value="更新" /> 
+			<input type="button" value="返回" name="back" onclick="return backup();"/>
+		</form>
+	</body>
+</html>
